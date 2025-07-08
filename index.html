@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rohit Udaiwal | AI Engineer</title>
+    <title>Rohit Udaiwal // AI Architect</title>
     
     <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="style.css">
@@ -11,21 +11,23 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+    <!-- Particle.js Container -->
+    <div id="particles-js"></div>
 
     <header>
         <nav class="container">
-            <a href="#hero" class="logo">Rohit Udaiwal</a>
+            <a href="#hero" class="logo">RU_AI</a>
             <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about">01_ABOUT</a></li>
+                <li><a href="#experience">02_EXPERIENCE</a></li>
+                <li><a href="#projects">03_PROJECTS</a></li>
+                <li><a href="#contact">04_CONTACT</a></li>
             </ul>
         </nav>
     </header>
@@ -35,111 +37,129 @@
         <section id="hero">
             <div class="hero-content">
                 <h1 class="fade-in">Rohit Udaiwal</h1>
-                <p class="fade-in"><span id="typing-text"></span></p>
+                <p class="subtitle fade-in">Architecting Intelligent Systems <span class="cursor">_</span></p>
                 <div class="social-links fade-in">
                     <a href="https://www.linkedin.com/in/rohit-udaiwal/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                     <a href="https://github.com/OTTO-28" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="mailto:udaiwalrohit@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                 </div>
-                <a href="assets/resume.pdf" class="cta-button fade-in" download>Download Resume</a>
+                <a href="assets/resume.pdf" class="cta-button fade-in" download>Download Dossier</a>
             </div>
         </section>
 
         <!-- About Section -->
         <section id="about" class="container section-padding">
-            <h2 class="section-title fade-in">About Me</h2>
-            <p class="fade-in">
-                I'm an AI Engineer with a passion for building scalable, data-driven solutions from the ground up. My journey has taken me from architecting critical data pipelines for <strong>JPMorgan Chase</strong> to developing cutting-edge AI for the fintech space at <strong>Finfactor</strong>. I thrive on translating complex problems—whether in finance or RF signal processing—into elegant, high-performance code.
-                <br><br>
-                A proud graduate of <strong>IIT, Guwahati</strong>, and a certified <strong>AWS Solutions Architect</strong>, I'm driven by a desire to build, innovate, and continuously learn.
-            </p>
+            <h2 class="section-title fade-in"><span>01</span> About Me</h2>
+            <div class="about-content fade-in">
+                <div class="about-text">
+                    <p>
+                        I'm an AI Engineer with a core drive to build scalable, data-driven solutions from the ground up. My experience spans from architecting critical data pipelines for <strong>JPMorgan Chase</strong> to developing cutting-edge AI for the fintech space. I thrive on translating complex problems—whether in finance or RF signal processing—into elegant, high-performance code.
+                        <br><br>
+                        As a proud graduate of <strong>IIT, Guwahati</strong>, and a certified <strong>AWS Solutions Architect</strong>, I am perpetually driven by the desire to build, innovate, and master new frontiers in technology.
+                    </p>
+                </div>
+                <!-- Coding Infographic Placeholder -->
+                <div class="about-infographic">
+                    <i class="fas fa-brain"></i>
+                    <i class="fas fa-code"></i>
+                    <i class="fas fa-server"></i>
+                    <i class="fas fa-cloud"></i>
+                </div>
+            </div>
         </section>
+
+        <div class="section-divider"></div>
 
         <!-- Experience Section -->
         <section id="experience" class="container section-padding">
-            <h2 class="section-title fade-in">My Journey</h2>
+            <h2 class="section-title fade-in"><span>02</span> Experience</h2>
             <div class="timeline">
+                <!-- Timeline Item -->
                 <div class="timeline-item fade-in">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
-                        <h3>Finfactor Technology</h3>
-                        <p class="timeline-date">AI Engineer | Pune, India | June 2025 - Present</p>
+                        <h3>Finfactor Technology // <span class="role">AI Engineer</span></h3>
+                        <p class="timeline-date">June 2025 - Present</p>
                         <ul>
-                            <li>Developed intelligent customer support systems using <strong>Flask, LangChain, and LLMs</strong>.</li>
-                            <li>Architecting transaction classifiers with <strong>BERT-based NLP</strong> to power financial decisions.</li>
+                            <li>Systems Architect: Developing intelligent customer support systems using <strong>Flask, LangChain & LLMs</strong>.</li>
+                            <li>Data Intelligence: Engineering transaction classifiers with <strong>BERT-based NLP</strong> to power financial decisions.</li>
                         </ul>
                     </div>
                 </div>
+                <!-- Timeline Item -->
                 <div class="timeline-item fade-in">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
-                        <h3>JPMorgan Chase & Co</h3>
-                        <p class="timeline-date">Software Development Engineer | Mumbai, India | Aug 2023 - May 2025</p>
+                        <h3>JPMorgan Chase & Co // <span class="role">Software Dev Engineer</span></h3>
+                        <p class="timeline-date">Aug 2023 - May 2025</p>
                         <ul>
-                            <li>Architected <strong>50+ scalable data pipelines</strong> using Python, PySpark, and AWS.</li>
-                            <li>Reduced deployment times by <strong>70%</strong> by building robust CI/CD pipelines with Jenkins and Docker.</li>
-                            <li>Mentored junior engineers, fostering a culture of <strong>ownership and rapid innovation</strong>.</li>
+                            <li>Pipeline Orchestration: Architected <strong>50+ scalable data pipelines</strong> using Python, PySpark, and AWS.</li>
+                            <li>Efficiency Engineering: Reduced deployment times by <strong>70%</strong> via robust CI/CD pipelines with Jenkins and Docker.</li>
                         </ul>
                     </div>
                 </div>
+                <!-- Timeline Item -->
                 <div class="timeline-item fade-in">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
-                        <h3>JPMorgan Chase & Co</h3>
-                        <p class="timeline-date">Software Engineering Intern | Bangalore, India | June 2022 - July 2022</p>
+                        <h3>JPMorgan Chase & Co // <span class="role">Software Eng. Intern</span></h3>
+                        <p class="timeline-date">June 2022 - July 2022</p>
                         <ul>
-                            <li>Spearheaded a data migration from Cassandra to AWS S3, achieving a <strong>7x cost reduction</strong>.</li>
-                            <li>Improved query performance by <strong>40%</strong> through high-performance storage solutions.</li>
+                            <li>Modernization Initiative: Spearheaded Cassandra to AWS S3 migration, achieving a <strong>7x cost reduction</strong>.</li>
+                            <li>Performance Tuning: Improved query performance by <strong>40%</strong> with optimized storage solutions.</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section -->
+        <div class="section-divider"></div>
+
+        <!-- Projects & Skills Section -->
         <section id="projects" class="container section-padding">
-            <h2 class="section-title fade-in">From Theory to Practice</h2>
+            <h2 class="section-title fade-in"><span>03</span> Core Competencies</h2>
+            <!-- Project Card -->
             <div class="project-card fade-in">
-                <h3>Deep Learning based Automatic Modulation Classification</h3>
+                <div class="project-header">
+                    <i class="fas fa-satellite-dish"></i>
+                    <h3>Featured Publication: Automatic Modulation Classification</h3>
+                </div>
                 <p class="project-source">Published at <strong>IEEE SPCOM '24</strong></p>
-                <p>Engineered an innovative quad-stream architecture combining LSTM networks and attention mechanisms to classify RF signals with <strong>99% accuracy</strong>. This work addresses critical needs in cognitive radio, military communications, and spectrum monitoring.</p>
+                <p>Engineered a novel quad-stream architecture combining LSTM networks and attention mechanisms to classify RF signals with <span class="highlight">99% accuracy</span>. This work addresses critical needs in cognitive radio and military communications.</p>
                 <div class="tech-stack">
-                    <span>TensorFlow</span>
-                    <span>Keras</span>
-                    <span>LSTM</span>
-                    <span>Attention Mechanisms</span>
+                    <span>TensorFlow</span><span>Keras</span><span>LSTM</span><span>Attention</span>
                 </div>
             </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="container section-padding">
-            <h2 class="section-title fade-in">My Toolkit</h2>
-            <div class="skills-grid fade-in">
-                <div>
-                    <h3>Languages</h3>
+            <!-- Skills Infographics -->
+            <div class="skills-grid">
+                <div class="skill-card fade-in">
+                    <i class="fas fa-terminal"></i>
+                    <h4>Languages & Databases</h4>
                     <p>Python, C++, Java, JavaScript, MySQL</p>
                 </div>
-                <div>
-                    <h3>Frameworks & Libraries</h3>
-                    <p>Flask, PySpark, Spring Boot, React, TensorFlow, Keras, LangChain</p>
+                <div class="skill-card fade-in">
+                    <i class="fas fa-cogs"></i>
+                    <h4>Frameworks & Libraries</h4>
+                    <p>Flask, PySpark, Spring Boot, React, TensorFlow, Keras</p>
                 </div>
-                <div>
-                    <h3>Platforms & DevOps</h3>
-                    <p>AWS, Docker, Kubernetes, Jenkins, Terraform, Kafka, Snowflake</p>
+                <div class="skill-card fade-in">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h4>Platforms & DevOps</h4>
+                    <p>AWS, Docker, Kubernetes, Jenkins, Terraform, Kafka</p>
                 </div>
             </div>
         </section>
+
+        <div class="section-divider"></div>
 
         <!-- Honors Section -->
         <section id="honors" class="container section-padding">
-            <h2 class="section-title fade-in">Achievements & Recognition</h2>
+            <h2 class="section-title fade-in">Accolades</h2>
             <div class="honors-grid fade-in">
-                <div class="honor-item"><strong>Codeforces Expert</strong><span>Max Rating: 1817</span></div>
-                <div class="honor-item"><strong>AWS Certified</strong><span>Solutions Architect – Associate</span></div>
-                <div class="honor-item"><strong>JEE Main 2019</strong><span>Top 0.3% of 1.3M</span></div>
-                <div class="honor-item"><strong>JEE Advanced 2019</strong><span>Rank 4285</span></div>
-                <div class="honor-item"><strong>NTSE Qualified</strong><span>National Level</span></div>
+                <div class="honor-badge"><i class="fas fa-trophy"></i><span><strong>Codeforces Expert</strong><br>Max Rating: 1817</span></div>
+                <div class="honor-badge"><i class="fas fa-certificate"></i><span><strong>AWS Certified</strong><br>Solutions Architect</span></div>
+                <div class="honor-badge"><i class="fas fa-rocket"></i><span><strong>JEE Main 2019</strong><br>Top 0.3% of 1.3M</span></div>
+                <div class="honor-badge"><i class="fas fa-atom"></i><span><strong>JEE Advanced 2019</strong><br>Rank 4285</span></div>
             </div>
         </section>
     </main>
@@ -147,18 +167,20 @@
     <!-- Contact Section / Footer -->
     <footer id="contact">
         <div class="container fade-in">
-            <h2 class="section-title">Let's Connect</h2>
-            <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious team.</p>
+            <h2 class="section-title"><span>04</span> Contact</h2>
+            <p>Open to new collaborations and ambitious projects. Let's build the future.</p>
             <a href="mailto:udaiwalrohit@gmail.com" class="email-link">udaiwalrohit[at]gmail.com</a>
             <div class="social-links">
                 <a href="https://www.linkedin.com/in/rohit-udaiwal/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 <a href="https://github.com/OTTO-28" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
-            <p class="copyright">© 2024 Rohit Udaiwal. Built with passion.</p>
+            <p class="copyright">© 2024 Rohit Udaiwal // All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- JavaScript File -->
+    
+    <!-- tsParticles Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
