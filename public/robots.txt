@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://otto-28.github.io/sitemap-index.xml

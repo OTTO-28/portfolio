@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Resume // Rohit Udaiwal">
+    <section>
+        <h1>Experience</h1>
+        <div class="job">
+            <div class="header">
+                <h3>Finfactor Technology</h3>
+                <span class="date">June 2025 - Present</span>
+            </div>
+            <p class="role">AI Engineer</p>
+            <ul>
+                <li>Systems Architect: Developing intelligent customer support systems using Flask, LangChain & LLMs.</li>
+                <li>Data Intelligence: Engineering transaction classifiers with BERT-based NLP to power financial decisions.</li>
+            </ul>
+        </div>
+        
+        <div class="job">
+            <div class="header">
+                <h3>JPMorgan Chase & Co</h3>
+                <span class="date">Aug 2023 - May 2025</span>
+            </div>
+            <p class="role">Software Dev Engineer</p>
+            <ul>
+                <li>Pipeline Orchestration: Architected 50+ scalable data pipelines using Python, PySpark, and AWS.</li>
+                <li>Efficiency Engineering: Reduced deployment times by 70% via robust CI/CD pipelines with Jenkins and Docker.</li>
+            </ul>
+        </div>
+        
+        <div class="job">
+            <div class="header">
+                <h3>JPMorgan Chase & Co</h3>
+                <span class="date">June 2022 - July 2022</span>
+            </div>
+            <p class="role">Software Eng. Intern</p>
+            <ul>
+                <li>Modernization Initiative: Spearheaded Cassandra to AWS S3 migration, achieving a 7x cost reduction.</li>
+                <li>Performance Tuning: Improved query performance by 40% with optimized storage solutions.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h1>Selected Projects</h1>
+        <div class="project">
+            <div class="header">
+                <h3>Automatic Modulation Classification</h3>
+                <span class="date">IEEE SPCOM '24</span>
+            </div>
+            <p>
+                Engineered a novel quad-stream architecture combining LSTM networks and attention mechanisms to classify RF signals with 99% accuracy. 
+                <br>
+                <span class="tech">Stack: TensorFlow, Keras, LSTM, Attention</span>
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <h1>Accolades</h1>
+        <ul class="accolades">
+            <li><strong>Codeforces Expert</strong> <span class="dim">(Max Rating: 1817)</span></li>
+            <li><strong>AWS Certified</strong> <span class="dim">Solutions Architect</span></li>
+            <li><strong>JEE Main 2019</strong> <span class="dim">Top 0.3% of 1.3M</span></li>
+            <li><strong>JEE Advanced 2019</strong> <span class="dim">Rank 4285</span></li>
+        </ul>
+    </section>
+    
+    <div class="download">
+        <a href="/assets/resume.pdf" class="button" download>Download PDF Resume</a>
+    </div>
+</Layout>
+
+<style>
+    section {
+        margin-bottom: 5rem;
+    }
+    h1 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #555;
+        margin-bottom: 2.5rem;
+    }
+    
+    .job, .project {
+        margin-bottom: 3.5rem;
+    }
+    
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.5rem;
+    }
+    
+    h3 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: white;
+        margin: 0;
+    }
+    
+    .date {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    .role {
+        color: white;
+        opacity: 0.9;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        font-style: italic;
+    }
+    
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    li {
+        margin-bottom: 0.75rem;
+        color: #bbb;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        padding-left: 1rem;
+        position: relative;
+    }
+    
+    li::before {
+        content: "•"; /* Minimal bullet */
+        position: absolute;
+        left: 0;
+        color: #444;
+    }
+    
+    .tech {
+        display: block;
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
+        color: #777;
+        font-family: var(--font-mono);
+    }
+    
+    .accolades li {
+        color: #ddd;
+    }
+    .dim {
+        color: #666;
+        margin-left: 0.5rem;
+    }
+    
+    .download {
+        margin-top: 4rem;
+        text-align: center;
+    }
+    .button {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid #333;
+        color: #ccc;
+        border-radius: 4px;
+        transition: all 0.2s;
+        font-size: 0.9rem;
+    }
+    .button:hover {
+        background: white;
+        color: black;
+        border-color: white;
+    }
+</style>

@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title="Blog // Rohit Udaiwal">
+    <section>
+        <h1>Blogs</h1>
+        <ul class="posts">
+            {posts.map((post) => (
+                <li>
+                    <a href={`/blog/${post.slug}/`}>
+                        <span class="title">{post.data.title}</span>
+                        <span class="date">
+                            {post.data.pubDate.toLocaleDateString('en-us', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                            })}
+                        </span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </section>
+</Layout>
+
+<style>
+    ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 3rem;
+    }
+    li {
+        margin-bottom: 0;
+        border-bottom: 1px dashed #222;
+        transition: background 0.2s;
+    }
+    li:hover {
+        background: rgba(255,255,255,0.02);
+    }
+    a {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.25rem 0.5rem;
+        align-items: center;
+    }
+    a:hover .title {
+        color: var(--color-accent);
+    }
+    .title {
+        font-weight: 400;
+        font-size: 1.1rem;
+    }
+    .date {
+        color: var(--color-text-muted);
+        font-size: 0.85rem;
+        font-family: var(--font-mono);
+        white-space: nowrap;
+        margin-left: 1rem;
+    }
+</style>

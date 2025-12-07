@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Rohit Udaiwal // AI Engineer">
+	<section class="hero">
+		<h1>Rohit Udaiwal</h1>
+		<p class="subtitle">AI Engineer specializing in deep learning, systems design, and machine learning.</p>
+		
+        <div class="bio">
+            <p>
+                I'm an engineer with a core drive to build scalable, data-driven solutions. My experience spans from architecting critical data pipelines for <strong>JPMorgan Chase</strong> to developing cutting-edge AI for the fintech space. I thrive on translating complex problems into elegant, high-performance code.
+            </p>
+        </div>
+
+        <div class="cta">
+             <a href="mailto:udaiwalrohit@gmail.com" class="button">Get in Touch</a>
+        </div>
+	</section>
+</Layout>
+
+<style>
+    .hero {
+        padding-top: 2rem;
+    }
+    .subtitle {
+        color: var(--color-text-muted);
+        font-size: 1.25rem;
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+    }
+    .bio {
+        margin-bottom: 2.5rem;
+        max-width: 36rem;
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #a3a3a3;
+    }
+    strong {
+        color: var(--color-text);
+        font-weight: 500;
+    }
+    .button {
+        display: inline-block;
+        border: 1px solid #333;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+        background: rgba(255,255,255,0.03);
+    }
+    .button:hover {
+        border-color: var(--color-text);
+        background: rgba(255,255,255,0.1);
+    }
+</style>

@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
+}
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={`${post.data.title} // Rohit Udaiwal`}>
+	<article>
+        <header>
+            <h1 class="title">{post.data.title}</h1>
+            <div class="meta">
+                <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString('en-us', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}
+                </time>
+            </div>
+        </header>
+        <div class="content">
+    		<Content />
+        </div>
+	</article>
+</Layout>
+
+<style>
+    article {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    header {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #1f1f1f;
+    }
+    .title {
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+        line-height: 1.3;
+    }
+    .meta {
+        color: var(--color-text-muted);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+    }
+    
+    .content :global(h2) {
+        margin-top: 3rem;
+        margin-bottom: 1.25rem;
+        font-size: 1.5rem;
+        color: white;
+        border-bottom: 1px solid #1f1f1f;
+        padding-bottom: 0.5rem;
+    }
+    .content :global(h3) {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        color: #eee;
+    }
+    .content :global(p) {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+        color: #d4d4d4;
+    }
+    .content :global(a) {
+        color: white;
+        text-decoration: underline;
+        text-decoration-color: #444;
+        text-underline-offset: 4px;
+        transition: all 0.2s;
+    }
+    .content :global(a:hover) {
+        text-decoration-color: white;
+    }
+    .content :global(pre) {
+        margin: 1.5rem 0;
+        padding: 1.25rem;
+        background: #0a0a0a !important;
+        border: 1px solid #222;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+    .content :global(code) {
+        background: #1a1a1a;
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        font-size: 0.9em;
+        font-family: var(--font-mono);
+    }
+    .content :global(pre code) {
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        font-size: 0.85em;
+        color: inherit;
+    }
+    .content :global(ul) {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+        list-style: disc;
+    }
+    .content :global(ol) {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+        list-style: decimal;
+    }
+    .content :global(li) {
+        margin-bottom: 0.5rem;
+        color: #d4d4d4;
+    }
+    .content :global(.katex-display) {
+        margin: 2rem 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+</style>
