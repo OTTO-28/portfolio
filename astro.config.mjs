@@ -7,7 +7,7 @@ import rehypeKatex from 'rehype-katex';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://otto-28.github.io',
+    site: 'https://rohit.udaiwal.com',
     integrations: [mdx(), sitemap()],
     markdown: {
         remarkPlugins: [remarkMath],
