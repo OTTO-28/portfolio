@@ -93,6 +93,7 @@ svg {
   padding: 0 48px;
 }
 .site-header {
+  border-bottom: 1px solid var(--line);
   height: 116px;
   display: flex;
   align-items: center;
@@ -141,7 +142,8 @@ nav a {
   padding-bottom: 4px;
 }
 .section {
-  padding: 44px 0 64px;
+  border-top: 1px solid var(--line);
+  padding: 38px 0 56px;
 }
 .section-heading {
   display: flex;
@@ -178,7 +180,8 @@ nav a {
   margin-bottom: 0;
 }
 .contact {
-  padding: 64px 0 56px;
+  border-top: 1px solid var(--line);
+  padding: 42px 0 54px;
   display: flex;
   align-items: center;
   justify-content: space-between;
