@@ -1,0 +1,121 @@
+---
+title: 'The hardest part of voice AI is knowing when to shut up.'
+description: 'Latency, interruptions, and the surprisingly complicated art of taking turns.'
+pubDate: '2026-11-08'
+category: 'Engineering'
+readTime: 8
+order: 1
+---
+
+import LatencyLab from '../../components/LatencyLab.astro';
+
+Try this: ask a friend a question, wait for their answer, then remain completely silent for two seconds before responding. Do it three times. You will sound distracted, mildly annoyed, or like your Wi-Fi is buffering.
+
+That is the first surprise of voice AI engineering. A response can be correct and still be a terrible response. Conversation has a clock. It also has interruptions, half-finished thoughts, background noise, and people who say “yes” when they mean “yes, I’m listening,” not “yes, go ahead.”
+
+My work at Risa Labs includes a voice agent for retrieving prior-authorization status, with IVR navigation, tool calls, live listening, and human takeover. That is the backdrop for this post. The examples below are simplified engineering scenarios, not a description of an internal production architecture.
+
+## A conversation is a live system
+
+The familiar pipeline is easy to draw:
+
+```text
+Microphone → speech-to-text → language model → text-to-speech → speaker
+                                   ↕
+                              tools / state
+```
+
+Speech-to-text (STT) turns sound into words. The language model decides what to say or do. Text-to-speech (TTS) turns the response back into audio. A cascade like this gives you boundaries to inspect: did the recognizer hear the right identifier? Did the tool return the right status? Did synthesis pronounce it clearly?
+
+A native speech-to-speech model can work directly with audio and retain cues that a plain transcript leaves out. That can make for expressive interaction, but it does not remove the application's responsibilities: permissions, tool execution, interruption handling, and knowing what actually reached the listener.
+
+Either way, the pipeline diagram is incomplete. The user can begin speaking while the model is generating, while a tool is running, or while several seconds of audio sit in a playback buffer. Every arrow needs a policy for that.
+
+> The unit of correctness is the conversation, including what the person actually heard.
+
+## Silence is a signal. It is not a full stop.
+
+Voice activity detection (VAD) answers an acoustic question: is there speech in this chunk of audio? End-of-turn detection answers a conversational one: is the person done?
+
+Consider: “My member ID is… let me find the card.” A silence threshold may close the turn after “is.” Waiting longer avoids that mistake but makes every ordinary exchange slower. Semantic turn detection can incorporate the words around the pause; it still needs testing on the languages, speaking styles, and audio conditions your application encounters. [LiveKit’s turn-handling documentation](https://docs.livekit.io/agents/logic/turns/) describes these distinct responsibilities.
+
+There is no universal magic timeout. Reading an account number is different from saying “thanks.” A caller searching for a document is different from an automated menu waiting for a keypad entry. Treat those as different conversational states.
+
+## Where the missing second goes
+
+For a deliberately simplified, serial pipeline, you can sketch the time to first audible response as:
+
+```text
+turn-end wait + STT finalization tail + model first token
+             + TTS first audio + transport / playback
+```
+
+The “tail” matters: recognition may already be running while the person speaks. Likewise, you can synthesize an initial phrase before the model finishes its whole answer. Adding the durations of every entire stage would overcount an overlapping pipeline.
+
+<LatencyLab />
+
+The slider exposes an easy trap. If turn detection contributes most of the wait, buying a faster language model only fixes part of the experience. If a backend tool takes three seconds, shaving 40 milliseconds from synthesis will not rescue that turn.
+
+Measure from the last user speech sample to the first audio the listener can hear, not merely to a server event that says “audio generated.” Track the distribution, especially the slow end, alongside premature turn closures. An agent that is usually fast but occasionally disappears for five seconds feels unreliable.
+
+A brief “I’m checking that” can help during a real lookup. Repeating it on every turn quickly becomes elevator music with opinions.
+
+## Interruptions are distributed cancellation
+
+Imagine the agent begins: “I’ll check the request for March—” and the caller says, “No, April.” Stopping the language model is not enough. Old synthesis may still be running. Old audio may still be queued. A backend request may already have left the process.
+
+A practical design assigns each response a generation ID and checks it at asynchronous boundaries:
+
+```python
+# Conceptual pseudocode; adapt cancellation to your runtime.
+async def respond(turn_id, user_input):
+    async for phrase in generate(user_input):
+        if turn_id != active_turn_id:
+            return
+        audio = await synthesize(phrase)
+        if turn_id != active_turn_id:
+            return
+        await playback.enqueue(turn_id, audio)
+
+async def interrupt():
+    advance_active_turn_id()
+    cancel_generation_and_synthesis()
+    await playback.clear_pending_audio()
+    reconcile_history_with_playback_acknowledgements()
+```
+
+This only illustrates the control flow. In a real system, enqueueing and clearing need coordinated ordering, the playback consumer must reject stale generations, and a remote audio buffer may require its own clear event. Otherwise, a race can put an old phrase back on the wire after cancellation.
+
+Crucially, “stop talking” and “undo the action” are different operations. Canceling a local task does not guarantee that a remote request was canceled. For writes, use idempotency keys, persist action status, and reconcile the outcome before retrying. Never conclude that nothing happened merely because the caller interrupted.
+
+Also distinguish an interruption from a backchannel. “Mm-hmm” may mean “keep going.” [Adaptive interruption handling](https://docs.livekit.io/agents/logic/turns/adaptive-interruption-handling/) is one approach to separating those signals; it still deserves evaluation with your actual callers.
+
+## The transcript is not the conversation
+
+Suppose the model generates “Your request is approved, starting Monday,” but the user interrupts after “Your request.” If the next turn treats the full sentence as delivered, the agent may assume it already communicated the decision.
+
+Keep separate records of generated content, queued audio, and played audio. Playback acknowledgements and text/audio alignment can help estimate the delivered portion. Where alignment is uncertain, preserve that uncertainty instead of inventing a precise word boundary.
+
+The same principle applies to tool results. A status returned by a service is evidence. The model's intention to call that service is not evidence. Do not say “done” until the authoritative result supports it; ask for clarification when an identifier is ambiguous.
+
+## Telephone calls introduce another cast of characters
+
+A telephone workflow might alternate between an IVR, hold music, a human representative, and your own user. Those are not interchangeable inputs.
+
+Represent the call as an explicit state machine: connecting, navigating a menu, waiting, speaking with a representative, handing off, and ended. Give each state deadlines and bounded recovery. If a menu repeats, do not let a model enthusiastically press “2” forever. DTMF keypad events and spoken digits are different channels; choose the one the interface expects.
+
+For human takeover, transfer conversational ownership as well as the audio connection. Stop autonomous speech, make the handoff status visible, and give the operator a concise summary of verified facts, attempted actions, and unresolved questions. A second confident voice joining at the wrong moment is not assistance.
+
+## Test the awkward bits
+
+A clean microphone demo tests a very forgiving world. Build a small, repeatable evaluation set containing pauses inside identifiers, corrections, repeated words, accents, quiet speech, background voices, long tool calls, dropped connections, and interrupted actions. Use synthetic or appropriately permitted data, and avoid putting sensitive records into ordinary debug logs.
+
+Inspect successful task completion, identifier accuracy, time to first audible response, false interruptions, cancellation-to-silence time, and recovery after failures. Read traces, but listen to representative calls too. A perfectly respectable event log can hide a deeply annoying conversation.
+
+My favorite test question is: **what happens if the person changes their mind at this exact moment?** Ask it during recognition, reasoning, tool execution, and playback. The answers reveal where the system actually holds its state.
+
+The pleasant voice is the part everyone notices first. The machinery that lets it wait, yield, recover, and tell the truth is what makes people willing to talk to it again.
+
+---
+
+**Further reading:** [LiveKit turn-taking tuning](https://docs.livekit.io/agents/logic/turns/tuning/) for endpointing tradeoffs, [tool interruption behavior](https://docs.livekit.io/agents/logic/tools/definition/) for execution semantics, and the [WebRTC overview](https://webrtc.org/getting-started/overview) for browser media capture and peer connections.

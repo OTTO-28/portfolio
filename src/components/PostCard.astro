@@ -1,0 +1,21 @@
+---
+import Artwork from './Artwork.astro';
+import { getArtwork, type Post } from '../lib/posts';
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+---
+
+<a class="post-card" href={`/blog/${post.id}/`}>
+  <div class:list={['post-art', post.data.category === 'Music' && 'music']}>
+    <Artwork type={getArtwork(post)} />
+  </div>
+  <div class="post-meta">
+    {post.data.category.toUpperCase()} <span aria-hidden="true">/</span>{' '}
+    {post.data.readTime} MIN READ
+  </div>
+  <h2>{post.data.title}</h2>
+  <p>{post.data.description}</p>
+  <span class="read-link">Read the story ↗</span>
+</a>

@@ -1,0 +1,113 @@
+{
+  "name": "Rohit Udaiwal",
+  "title": "AI Engineer",
+  "email": "udaiwalrohit@gmail.com",
+  "phone": "+91 8529337644",
+  "website": "https://rohit.udaiwal.com",
+  "linkedin": "https://www.linkedin.com/in/rohit-udaiwal/",
+  "experience": [
+    {
+      "company": "RISA Labs",
+      "location": "Bangalore, India",
+      "role": "Senior Member of Technical Staff",
+      "dates": "March 2026 - Present",
+      "bullets": [
+        {
+          "label": "Knowledge Graphs & Clinical Trial Eligibility",
+          "text": "Building knowledge graphs for clinical trial eligibility screening using a funnel-based approach: filtering patients criterion by criterion through structured Cypher queries and narrative queries over patient medical records to answer clinical eligibility questions."
+        },
+        {
+          "label": "RPA & Portal Integration",
+          "text": "Engineered payer-portal workflows for US healthcare pharmacy prior authorization (PA), eliminating up to 60% of manual form submissions and progressing toward no-touch PA submissions."
+        },
+        {
+          "label": "Medical Necessity Agent",
+          "text": "Built an agent that reasons over clinical charts against medical-necessity criteria to answer PA questionnaires and predict approval likelihood, using MCP tools for CMS/OpenFDA and a custom PA skill on the Claude Agent SDK."
+        },
+        {
+          "label": "PA Status Voice Agent",
+          "text": "Built a voice agent to retrieve real-time PA status from PBMs through tool calls, with IVR navigation, live call listening, human takeover, and real-time status updates."
+        }
+      ]
+    },
+    {
+      "company": "Finfactor Technology",
+      "location": "Pune, India",
+      "role": "AI Engineer",
+      "dates": "June 2025 - October 2025",
+      "bullets": [
+        {
+          "label": "Intelligent Customer Support",
+          "text": "Developed a centralized support chatbot using Flask, LangChain, retrieval-augmented generation (RAG), and Model Context Protocol to route queries by request type."
+        },
+        {
+          "label": "Transaction Classification",
+          "text": "Worked on a bank-statement narration classifier using Quarkus, React, Next.js, LLMs, BERT-based NLP, and vLLM for personal finance and lending decisions."
+        },
+        {
+          "label": "Financial AI",
+          "text": "Led development of machine learning solutions using NLP and large language models for real-time transaction analysis and financial decision-making."
+        }
+      ]
+    },
+    {
+      "company": "JPMorgan Chase & Co.",
+      "location": "Mumbai, India",
+      "role": "Software Development Engineer - Wealth Management",
+      "dates": "August 2023 - May 2025",
+      "bullets": [
+        {
+          "label": "Scalable Data Pipelines",
+          "text": "Developed 50+ multi-region data pipelines to collect, process, and store diverse datasets in the central Wealth Management data lake."
+        },
+        {
+          "label": "Modernization",
+          "text": "Built data-processing workflows with Python, PySpark, Spring Boot, AWS, and Docker; created an enterprise Spring Boot application adopted by 100+ teams."
+        },
+        {
+          "label": "CI/CD Automation",
+          "text": "Developed Jenkins and Docker CI/CD pipelines that reduced deployment times by 70%."
+        }
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "label": "Languages & Querying",
+      "text": "Python, C++, Java, JavaScript, C, MySQL, Cypher"
+    },
+    {
+      "label": "Frameworks & Libraries",
+      "text": "Flask, Quarkus, Spring Boot, FastAPI, Django, React, Next.js, Spark, PyTorch"
+    },
+    {
+      "label": "AI Tools & Techniques",
+      "text": "Knowledge graphs, clinical eligibility screening, voice agents, vLLM, PEFT, LoRA, RAG, LangChain, MCP, Claude Agent SDK"
+    },
+    {
+      "label": "Platforms & Services",
+      "text": "AWS, Kubernetes, Docker, Kafka, Terraform, Jenkins, Linux, Dynatrace, Grafana, PostHog, Snowflake"
+    }
+  ],
+  "publication": {
+    "title": "Deep Learning based Automatic Modulation Classification",
+    "venue": "IEEE SPCOM '24",
+    "institution": "IIT Guwahati",
+    "dates": "May 2023 - July 2023",
+    "url": "https://ieeexplore.ieee.org/document/10631596",
+    "text": "Developed a quad-stream architecture combining LSTMs and attention for RF-signal classification, achieving 99% accuracy in the reported evaluation. Implemented custom attention layers in TensorFlow and Keras, with applications in cognitive radio, spectrum monitoring, and civilian and defense communications."
+  },
+  "education": {
+    "institution": "Indian Institute of Technology (IIT), Guwahati",
+    "degree": "B.Tech in Electronics and Electrical Engineering",
+    "date": "June 2023",
+    "grade": "CGPA: 8.38/10.0"
+  },
+  "honors": [
+    "Codeforces Expert - maximum rating 1817",
+    "AWS Certified Solutions Architect - Associate (2023)",
+    "JEE Main 2019 - top 0.3% of 1.3 million participants",
+    "JEE Advanced 2019 - rank 4285",
+    "NTSE - qualified for national level; 140/150 marks"
+  ]
+}

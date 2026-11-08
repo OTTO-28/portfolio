@@ -1,0 +1,152 @@
+<figure class="visual" id="chord-lab">
+  <div class="visual-title">
+    <span>02 / One note changes the weather</span>
+    <span>Sound on · tap to listen</span>
+  </div>
+  <div class="chord-buttons">
+    <button type="button" data-chord="major" aria-pressed="true">
+      C major · C E G
+    </button>
+    <button type="button" data-chord="minor" aria-pressed="false">
+      C minor · C E♭ G
+    </button>
+    <button type="button" data-chord="sus" aria-pressed="false">
+      C sus4 · C F G
+    </button>
+    <button type="button" id="cadence">
+      Play G7 → C
+    </button>
+  </div>
+  <div class="piano" aria-hidden="true">
+    {['C', 'D', 'E', 'F', 'G', 'A', 'B'].map((n) => (
+      <span
+        class="piano-key"
+        data-note={n}
+        data-active={['C', 'E', 'G'].includes(n)}
+      >
+        {n}
+      </span>
+    ))}
+  </div>
+  <div class="note-output" id="chord-status" aria-live="polite">
+    C major: 0, 4, 7 semitones. Tap a chord to hear it.
+  </div>
+  <figcaption>
+    The keyboard highlights natural chord tones; E♭ is the black key between D
+    and E. Synthesized locally with the Web Audio API. No microphone, recording,
+    or autoplay.
+  </figcaption>
+</figure>
+<script>
+  let ctx: AudioContext | undefined;
+  let active: OscillatorNode[] = [];
+  const chords: Record<
+    string,
+    { midi: number[]; notes: string[]; label: string }
+  > = {
+    major: {
+      midi: [60, 64, 67],
+      notes: ['C', 'E', 'G'],
+      label: 'C major: 0, 4, 7 semitones. A major third with a perfect fifth.',
+    },
+    minor: {
+      midi: [60, 63, 67],
+      notes: ['C', 'G'],
+      label:
+        'C minor: 0, 3, 7 semitones. E moves down to E♭; the root and fifth stay.',
+    },
+    sus: {
+      midi: [60, 65, 67],
+      notes: ['C', 'F', 'G'],
+      label:
+        'C sus4: 0, 5, 7 semitones. F replaces the third; hear the open suspension.',
+    },
+  };
+  function stop() {
+    active.forEach((o) => {
+      try {
+        o.stop();
+      } catch {}
+    });
+    active = [];
+  }
+  function play(midi: number[], when: number, duration = 1.6) {
+    if (!ctx) return;
+    const c = ctx;
+    midi.forEach((note) => {
+      const oscillator = c.createOscillator();
+      const gain = c.createGain();
+      oscillator.type = 'triangle';
+      oscillator.frequency.value = 440 * 2 ** ((note - 69) / 12);
+      gain.gain.setValueAtTime(0, when);
+      gain.gain.linearRampToValueAtTime(0.045, when + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.001, when + duration);
+      oscillator.connect(gain);
+      gain.connect(c.destination);
+      oscillator.start(when);
+      oscillator.stop(when + duration + 0.05);
+      active.push(oscillator);
+      oscillator.onended = () => {
+        oscillator.disconnect();
+        gain.disconnect();
+        active = active.filter((o) => o !== oscillator);
+      };
+    });
+  }
+  async function ready() {
+    ctx ??= new AudioContext();
+    await ctx.resume();
+    stop();
+    return ctx;
+  }
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    '[data-chord]',
+  )) {
+    button.addEventListener('click', async () => {
+      try {
+        const c = await ready();
+        const chord = chords[button.dataset.chord!];
+        document
+          .querySelectorAll('[data-chord]')
+          .forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+        document
+          .querySelectorAll<HTMLElement>('[data-note]')
+          .forEach(
+            (k) =>
+              (k.dataset.active = String(
+                chord.notes.includes(k.dataset.note!),
+              )),
+          );
+        document.querySelector('#chord-status')!.textContent = chord.label;
+        play(chord.midi, c.currentTime);
+      } catch {
+        document.querySelector('#chord-status')!.textContent =
+          'Audio is unavailable in this browser. The chord intervals are shown on the buttons and in the article.';
+      }
+    });
+  }
+  document.querySelector('#cadence')!.addEventListener('click', async () => {
+    try {
+      const c = await ready();
+      document
+        .querySelectorAll('[data-chord]')
+        .forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      document
+        .querySelectorAll<HTMLElement>('[data-note]')
+        .forEach((k) => (k.dataset.active = 'false'));
+      document.querySelector('#chord-status')!.textContent =
+        'G7 → C: B rises to C; F falls to E. Listen for the arrival.';
+      play([55, 59, 62, 65], c.currentTime, 1.2);
+      play([60, 64, 67], c.currentTime + 1.3, 2);
+    } catch {
+      document.querySelector('#chord-status')!.textContent =
+        'Audio is unavailable. G7 (G B D F) resolves to C major (C E G).';
+    }
+  });
+  window.addEventListener('pagehide', () => {
+    stop();
+    // A page restored from the back-forward cache needs a fresh audio context.
+    ctx?.close();
+    ctx = undefined;
+  });
+</script>

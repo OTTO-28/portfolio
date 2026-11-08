@@ -1,0 +1,181 @@
+---
+title: 'Why a few notes can feel like coming home.'
+description: 'A small journey from vibrating air to chords, tension, and the pleasure of resolution.'
+pubDate: '2026-11-08'
+category: 'Music'
+readTime: 7
+order: 2
+---
+
+import ChordLab from '../../components/ChordLab.astro';
+
+Play a little tune and stop one note before the ending. Your brain may try to finish it for you. Nobody asked it to. It just has opinions about where the music should go.
+
+Music theory gives names to some of those expectations. The fun starts when the names connect to something you can hear: a note that leans, a chord that floats, a bass line that makes the same melody feel suddenly different.
+
+Let’s start with vibrating air and end with a tiny homecoming. This is one lens on Western tonal music and twelve-tone equal temperament, not a universal explanation of every musical tradition—or every listener’s emotional response.
+
+## Pitch is a speed. An interval is a relationship.
+
+A pitched sound has a repeating pattern. Its fundamental frequency counts those repetitions per second, in hertz. A common tuning reference is A4 at 440 Hz. Double that to 880 Hz and you get A5: an octave higher.
+
+Why call both of them A? In many musical settings we hear an important similarity between pitches an octave apart. They are different heights with a related identity. Think of pitch height as a staircase and pitch class as the floor plan that repeats.
+
+The relationship is multiplicative. A 220 Hz to 440 Hz jump and a 440 Hz to 880 Hz jump span the same interval, even though the second jump contains twice as many additional hertz.
+
+Modern equal-tempered keyboards divide an octave into twelve equal **ratios**. Each semitone multiplies frequency by the twelfth root of two, about 1.05946:
+
+```text
+frequency after n semitones = starting frequency × 2^(n/12)
+
+A4                  440.00 Hz
+A♯4 / B♭4           466.16 Hz
+B4                  493.88 Hz
+A5                  880.00 Hz  ← twelve steps later
+```
+
+Equal spacing on a keyboard is logarithmic spacing in frequency. This is why adding a fixed number of hertz to every note does not correctly transpose a melody. You need to multiply every frequency by the same ratio. The [UNSW note-frequency reference](https://newt.phys.unsw.edu.au/jw/notes.html) connects this relationship to standard tuning.
+
+## Why simple ratios are interesting
+
+An ideal harmonic tone contains a fundamental plus components at integer multiples of it: f, 2f, 3f, and so on. If one note sits at 200 Hz and another at 300 Hz, the third harmonic of the lower note and the second harmonic of the upper note meet at 600 Hz. That 3:2 relationship is a just perfect fifth.
+
+In twelve-tone equal temperament, a fifth is seven semitones: 2^(7/12), about 1.4983. Close to 1.5, but not identical. Equal temperament is a useful compromise: the interval pattern stays consistent when you change keys, while most intervals differ slightly from their simple-ratio counterparts.
+
+This is not a formula for beauty. Timbre, register, loudness, context, and learned expectations all affect the result. Simple ratios illuminate part of the acoustics; they do not tell you which song will make somebody cry on a bus.
+
+## A scale is a selection, not a cage
+
+The chromatic collection gives us twelve pitch classes. A major scale selects seven using the spacing pattern whole, whole, half, whole, whole, whole, half. A whole step is two semitones; a half step is one.
+
+<figure className="visual">
+  <div className="visual-title">
+    <span>01 / The major-scale recipe</span>
+    <span>Distances in semitones</span>
+  </div>
+  <svg
+    viewBox="0 0 620 130"
+    role="img"
+    aria-label="C major: C to D two semitones, D to E two, E to F one, F to G two, G to A two, A to B two, and B to C one."
+  >
+    <path d="M35 45H585" stroke="var(--diagram-line)" fill="none" />
+    <g
+      fontFamily="monospace"
+      textAnchor="middle"
+      fontSize="16"
+      fill="var(--green)"
+    >
+      <text x="35" y="42">
+        C
+      </text>
+      <text x="115" y="42">
+        D
+      </text>
+      <text x="195" y="42">
+        E
+      </text>
+      <text x="265" y="42">
+        F
+      </text>
+      <text x="345" y="42">
+        G
+      </text>
+      <text x="425" y="42">
+        A
+      </text>
+      <text x="505" y="42">
+        B
+      </text>
+      <text x="585" y="42">
+        C
+      </text>
+    </g>
+    <g
+      fontFamily="monospace"
+      textAnchor="middle"
+      fontSize="13"
+      fill="var(--diagram-text)"
+    >
+      <text x="75" y="80">
+        2
+      </text>
+      <text x="155" y="80">
+        2
+      </text>
+      <text x="230" y="80">
+        1
+      </text>
+      <text x="305" y="80">
+        2
+      </text>
+      <text x="385" y="80">
+        2
+      </text>
+      <text x="465" y="80">
+        2
+      </text>
+      <text x="545" y="80">
+        1
+      </text>
+    </g>
+    <path d="M35 100H585" stroke="var(--diagram-line)" strokeDasharray="2 5" />
+    <text
+      x="310"
+      y="123"
+      textAnchor="middle"
+      fontFamily="monospace"
+      fontSize="10"
+      fill="var(--diagram-text)"
+    >
+      12 SEMITONES · ONE OCTAVE · FREQUENCY × 2
+    </text>
+  </svg>
+</figure>
+
+Start that pattern on C and you get the white keys: C, D, E, F, G, A, B, C. Start on G and you need F♯ to preserve the spacing. The pattern is the portable idea; the letter names are one particular address. See [The Major Scale](https://musictheory.pugetsound.edu/mt21c/TheMajorScale.html) for the notation.
+
+A key adds a sense of hierarchy. C major is not simply “these seven notes are allowed.” It usually means C is treated as a tonal center. A melody can visit notes outside the scale without losing its home address.
+
+## Chords: change one note, change the light
+
+Take every other note of C major starting from C: C, E, G. That is a major triad. Measured from C, the notes sit at 0, 4, and 7 semitones.
+
+Lower E to E♭ and you get C minor: 0, 3, and 7. Only the third moved. The root and fifth stayed put, yet the chord's character changed. Replace the third with F instead and you have C sus4. Without a third, it withholds the usual major/minor signal. The [introduction to triads](https://musictheory.pugetsound.edu/mt21c/TriadsIntroduction.html) gives the interval-based definitions.
+
+<ChordLab />
+
+“Major is happy, minor is sad” works as a first cartoon, then becomes an obstacle. A slow major passage can ache. A fast minor groove can feel triumphant. The chord gives you a color; tempo, rhythm, register, articulation, and context decide how the room is lit.
+
+Try playing C sus4 and then C major. Listen to the F move to E. One small motion can carry a surprising amount of narrative.
+
+## The little engine inside a resolution
+
+Now try the **G7 → C** button. G7 contains G, B, D, and F. C major contains C, E, and G.
+
+In C major, B is the leading tone: it is a semitone below C. F is a semitone above E. Move B up and F down, and two voices arrive at notes of the C chord with very little travel. The tritone between B and F resolves to the C–E third in that voice leading. The bass moving from G to C reinforces the arrival.
+
+That is a concrete piece of the “coming home” sensation in this tonal context. It is not a law that forces every G7 to resolve to C. A composer can delay the resolution, redirect it, or use the chord in a different musical language altogether.
+
+> Music gets interesting when an expectation is clear enough to bend.
+
+The circle of fifths in the illustration at the top is a map of related pitch classes and keys. Each clockwise step moves up a fifth, wrapping into the same octave. C sits next to G and F; their major scales each differ from C major by one pitch class. That makes them close neighbors on this particular map. It is a navigation aid, not a requirement to march around the circle in every song.
+
+## Rhythm gets a vote
+
+So far we have ignored time, which is a bit like explaining a joke by listing its nouns.
+
+A beat gives you a recurring pulse. Meter groups pulses into patterns of emphasis. Rhythm is the placement and duration of events against that background. Syncopation can move an accent away from an expected strong position or sustain a sound across it.
+
+Tap four steady beats: **ONE, two, three, four**. Now keep tapping but clap just before three. The grid did not move; your accent leaned across it. That relationship is part of what makes a phrase feel like it pushes forward.
+
+The same notes can sound settled when they arrive on strong beats and unsettled when their arrivals are delayed. Harmony and rhythm are coauthors, not independent settings on a synthesizer.
+
+## Three ways to make theory less abstract
+
+**Move the whole pattern.** Play a short melody from C, then start it elsewhere while preserving its semitone distances. You are transposing. Your ear recognizes the shape even though the frequencies changed.
+
+**Keep the root; change the third.** Alternate C major and C minor in the player. Then change register or rhythm on an instrument. Notice how much of the emotional label was actually coming from the performance.
+
+**Delay the arrival.** Play G7, wait, then play C. Next time, stop on G7. The missing ending may be more instructive than a page of definitions.
+
+Theory is at its best when it makes you hear another possibility. Learn a name, test it with your ears, then give yourself permission to use it strangely.

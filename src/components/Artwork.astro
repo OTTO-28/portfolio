@@ -1,0 +1,236 @@
+---
+interface Props {
+  type?: 'graph' | 'voice' | 'music' | 'eligibility';
+}
+const { type = 'graph' } = Astro.props;
+const bars = Array.from({ length: 24 }, (_, i) => ({
+  x: 35 + i * 6,
+  x2: 265 + i * 6,
+  h: 8 + Math.abs(Math.sin(i * 1.8)) * Math.sin(((i + 1) / 25) * Math.PI) * 64,
+  h2: 6 + Math.abs(Math.cos(i * 1.4)) * Math.sin(((i + 1) / 25) * Math.PI) * 80,
+}));
+const notes = [
+  'C',
+  'G',
+  'D',
+  'A',
+  'E',
+  'B',
+  'F♯',
+  'D♭',
+  'A♭',
+  'E♭',
+  'B♭',
+  'F',
+].map((n, i) => ({
+  n,
+  i,
+  x: 220 + 72 * Math.cos((i * Math.PI) / 6 - Math.PI / 2),
+  y: 110 + 72 * Math.sin((i * Math.PI) / 6 - Math.PI / 2),
+}));
+---
+
+{type === 'graph' ? (
+  <svg
+    viewBox="0 0 380 350"
+    role="img"
+    aria-label="An abstract knowledge graph: connected ideas forming a larger system"
+  >
+    <defs>
+      <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r=".7" fill="var(--diagram-dot)" />
+      </pattern>
+    </defs>
+    <rect x="20" y="12" width="340" height="310" fill="url(#dots)" />
+    <g fill="none" stroke="var(--diagram-line)" stroke-width="1">
+      <ellipse cx="190" cy="168" rx="131" ry="130" stroke-dasharray="3 5" />
+      <ellipse cx="190" cy="168" rx="82" ry="83" />
+      <path d="M64 173L119 65L256 70L310 185L246 279L106 266Z M119 65L190 168L256 70 M64 173L190 168L310 185 M106 266L190 168L246 279 M119 65L106 266 M256 70L246 279 M106 266L310 185 M64 173L256 70" />
+    </g>
+    <g fill="var(--paper)" stroke="var(--diagram-node)">
+      <circle cx="64" cy="173" r="8" />
+      <circle cx="119" cy="65" r="9" />
+      <circle cx="256" cy="70" r="7" />
+      <circle cx="310" cy="185" r="10" />
+      <circle cx="246" cy="279" r="8" />
+      <circle cx="106" cy="266" r="6" />
+    </g>
+    <circle cx="190" cy="168" r="24" fill="var(--diagram-fill)" />
+    <circle cx="190" cy="168" r="13" fill="var(--green)" />
+    <circle cx="186" cy="164" r="3" fill="var(--paper)" />
+    <g font-family="monospace" font-size="9" fill="var(--diagram-text)">
+      <text x="96" y="43">
+        context
+      </text>
+      <text x="267" y="56">
+        evidence
+      </text>
+      <text x="259" y="304">
+        reasoning
+      </text>
+      <text x="44" y="295">
+        connection
+      </text>
+    </g>
+  </svg>
+) : type === 'eligibility' ? (
+  <svg
+    viewBox="0 0 440 220"
+    role="img"
+    aria-label="Patient evidence joins structured queries and narrative context before criterion-level review"
+  >
+    <g fill="none" stroke="var(--diagram-line)">
+      <path d="M60 65L170 65L220 110L275 65L380 65M60 155L170 155L220 110L275 155L380 155" />
+      <circle cx="220" cy="110" r="32" stroke-dasharray="3 5" />
+    </g>
+    <g fill="var(--paper)" stroke="var(--diagram-node)">
+      <circle cx="60" cy="65" r="13" />
+      <circle cx="60" cy="155" r="13" />
+      <circle cx="170" cy="65" r="8" />
+      <circle cx="170" cy="155" r="8" />
+      <rect x="277" y="47" width="105" height="36" rx="3" />
+      <rect x="277" y="137" width="105" height="36" rx="3" />
+    </g>
+    <circle cx="220" cy="110" r="13" fill="var(--green)" />
+    <g
+      font-family="monospace"
+      font-size="9"
+      fill="var(--diagram-text)"
+      text-anchor="middle"
+    >
+      <text x="105" y="38">
+        STRUCTURED FACTS
+      </text>
+      <text x="105" y="188">
+        NARRATIVE CONTEXT
+      </text>
+      <text x="330" y="69">
+        EVIDENCE
+      </text>
+      <text x="330" y="159">
+        UNCERTAINTY
+      </text>
+      <text x="220" y="202">
+        ONE CRITERION AT A TIME
+      </text>
+    </g>
+  </svg>
+) : type === 'voice' ? (
+  <svg
+    viewBox="0 0 440 220"
+    role="img"
+    aria-label="Audio waveforms move through listening, reasoning, and speaking"
+  >
+    <g stroke="var(--diagram-line)" stroke-width="1">
+      <path d="M0 55H440M0 110H440M0 165H440" />
+      <path d="M55 0V220M110 0V220M165 0V220M220 0V220M275 0V220M330 0V220M385 0V220" />
+    </g>
+    <g stroke="var(--diagram-node)" stroke-width="3" stroke-linecap="round">
+      {bars.map((b) => (
+        <line x1={b.x} x2={b.x} y1={110 - b.h / 2} y2={110 + b.h / 2} />
+      ))}
+    </g>
+    <path
+      d="M185 110H253"
+      stroke="var(--diagram-line)"
+      stroke-dasharray="3 5"
+    />
+    <circle
+      cx="220"
+      cy="110"
+      r="17"
+      fill="var(--paper)"
+      stroke="var(--diagram-node)"
+    />
+    <path
+      d="M214 110H226M222 106L226 110L222 114"
+      fill="none"
+      stroke="var(--green)"
+    />
+    <g stroke="var(--green)" stroke-width="3" stroke-linecap="round">
+      {bars.map((b) => (
+        <line x1={b.x2} x2={b.x2} y1={110 - b.h2 / 2} y2={110 + b.h2 / 2} />
+      ))}
+    </g>
+    <g
+      font-family="monospace"
+      font-size="9"
+      fill="var(--diagram-text)"
+      letter-spacing="1"
+    >
+      <text x="62" y="185">
+        LISTEN
+      </text>
+      <text x="199" y="185">
+        THINK
+      </text>
+      <text x="319" y="185">
+        SPEAK
+      </text>
+    </g>
+  </svg>
+) : (
+  <svg
+    viewBox="0 0 440 220"
+    role="img"
+    aria-label="Circle of fifths with the notes C, F, and G highlighted"
+  >
+    <g stroke="var(--music-line)" fill="none">
+      <circle cx="220" cy="110" r="72" />
+      <circle cx="220" cy="110" r="48" />
+      <path d="M0 110H125M315 110H440" />
+      <path d="M220 0V20M220 200V220" />
+    </g>
+    <path
+      d="M220 38L256 48L184 48Z"
+      fill="var(--music-wash)"
+      fill-opacity=".65"
+      stroke="var(--music-accent)"
+    />
+    {notes.map(({ n, i, x, y }) => (
+      <g>
+        <circle
+          cx={x}
+          cy={y}
+          r="13"
+          fill={
+            [0, 1, 11].includes(i) ? 'var(--music-accent)' : 'var(--music-bg)'
+          }
+        />
+        <text
+          x={x}
+          y={y + 4}
+          text-anchor="middle"
+          font-family="monospace"
+          font-size="10"
+          fill={
+            [0, 1, 11].includes(i) ? 'var(--on-accent)' : 'var(--music-ink)'
+          }
+        >
+          {n}
+        </text>
+      </g>
+    ))}
+    <text
+      x="220"
+      y="111"
+      text-anchor="middle"
+      font-family="Georgia,serif"
+      font-style="italic"
+      font-size="20"
+      fill="var(--music-ink)"
+    >
+      a little tension.
+    </text>
+    <text
+      x="220"
+      y="128"
+      text-anchor="middle"
+      font-family="monospace"
+      font-size="7"
+      fill="var(--music-ink)"
+    >
+      THEN, HOME.
+    </text>
+  </svg>
+)}

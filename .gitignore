@@ -15,10 +15,20 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.*
+!.env.example
 
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+
+# Local artifact previews and generated CV copy (served PDF is tracked)
+tmp/
+output/
+
+# Python tooling
+.venv/
+__pycache__/
+*.pyc
