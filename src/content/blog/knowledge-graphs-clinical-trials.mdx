@@ -1,0 +1,139 @@
+---
+title: 'A missing edge is not a medical fact.'
+description: 'Knowledge graphs, clinical-trial screening, and why a good funnel needs somewhere for “we don’t know” to go.'
+pubDate: '2026-11-08'
+category: 'Engineering'
+artwork: 'eligibility'
+readTime: 8
+order: 3
+---
+
+import EligibilityEvidence from '../../components/EligibilityEvidence.astro';
+
+“Does this patient meet the trial criteria?” sounds like a yes-or-no question. Then you open the records.
+
+A diagnosis lives in a problem list. A treatment date lives in an administration record. An important qualification sits halfway through a note. Another note says “consider,” rather than “confirmed.” The relevant sentence might concern a family member. Somewhere, a copied paragraph has survived three visits longer than it should have.
+
+The difficulty is not just finding a word. It is deciding what the record actually supports, for which patient, at which time, under which version of the criterion.
+
+At Risa Labs, I’ve been working on knowledge graphs for clinical-trial eligibility screening. We use a funnel-based approach, filtering patients criterion by criterion through structured Cypher queries and narrative queries over patient medical records. This post develops the engineering intuition behind that pattern. The schemas, queries, and patient examples below are fictional illustrations, not our internal implementation or a validated screening tool.
+
+## Start with a funnel, but give uncertainty its own lane
+
+Imagine evaluating every sentence in every patient's chart against every criterion using a language model. That may be a useful prototype. It is also a rather expensive way to discover that a simple, well-supported fact already answers a question.
+
+A funnel breaks the work into smaller decisions. First, establish the population and the protocol version. Then evaluate criteria with the evidence they need, using structured checks where the data supports them and narrative interpretation where context matters. Carry the evidence and unresolved questions forward.
+
+There is an important asymmetry here. A verified failure of a mandatory inclusion criterion can establish a screening mismatch. Failure to _find_ evidence that the criterion is satisfied cannot.
+
+A sensible funnel therefore has at least three paths: supported, not satisfied, and unresolved. The last path is not a waste bin. It is a queue for better evidence or review. If you discard it early, later stages never get a chance to correct the mistake.
+
+> A smaller candidate list is not automatically a better candidate list. You also need to know who disappeared, and why.
+
+Order cheap, reliable checks early when that reduces work without losing potentially eligible patients. But “cheap” and “reliable” are separate properties. A missing field is extremely cheap to query and sometimes extremely expensive to misinterpret.
+
+## What the graph buys you
+
+A knowledge graph represents entities and their relationships. In this setting, the useful part is the ability to follow a clinical assertion back through time and evidence—not the aesthetic pleasure of drawing more circles.
+
+A small teaching schema might look like this:
+
+```text
+(Patient)-[:HAS_ASSERTION]->(ClinicalAssertion)
+(ClinicalAssertion)-[:ABOUT]->(ClinicalConcept)
+(ClinicalAssertion)-[:SUPPORTED_BY]->(SourceDocument)
+
+(Patient)-[:HAS_ADMINISTRATION]->(Administration)
+(Administration)-[:OF_THERAPY]->(Therapy)
+
+(TrialVersion)-[:HAS_CRITERION]->(Criterion)
+(Assessment)-[:EVALUATES]->(Criterion)
+(Assessment)-[:USES_EVIDENCE]->(ClinicalAssertion)
+```
+
+The assertion is useful as its own object because “condition present” has more dimensions than a patient-to-diagnosis edge suggests. You may need assertion status, experiencer, event time, documentation time, extraction method, and source location. “Family history of X,” “X ruled out,” and “possible X” should not collapse into the same positive fact.
+
+A relational database can model these relationships too. A graph is useful when traversing connected evidence is a central workload and the model makes those traversals easier to reason about. It does not eliminate entity resolution, terminology mapping, data quality, or access control. Those still have to work.
+
+## Use Cypher for a precise question
+
+Suppose we have a fictional criterion: at least 28 days since the last dose of Therapy X. A narrowly scoped query can fetch the recorded administrations within the relevant interval:
+
+```cypher
+// Illustrative schema. $asOf is a date; $therapyCode is normalized.
+MATCH (p:Patient {id: $patientId})
+OPTIONAL MATCH (p)-[:HAS_ADMINISTRATION]->(a:Administration)
+               -[:OF_THERAPY]->(t:Therapy)
+WHERE t.code = $therapyCode
+  AND a.status = 'administered'
+  AND a.date > $asOf - duration({days: 28})
+  AND a.date <= $asOf
+RETURN p.id AS patientId,
+       collect(a { .id, .date, .sourceDocumentId }) AS recentDoses
+```
+
+This query retrieves evidence. It deliberately does not return a field named `eligible`.
+
+A verified recent administration can support a mismatch with this particular toy criterion. An empty list means there were no matching recorded administrations. It does not prove the patient received no treatment, and it does not establish when the last dose occurred.
+
+There are boundary decisions hiding even in this small query. Does the protocol use dates or elapsed hours? Which timezone matters? Is the reference point screening, enrollment, or first study treatment? Are dose holds, alternative formulations, or exceptions relevant? Resolve these in the criterion specification before turning prose into a predicate.
+
+Also watch nulls. In Cypher, an absent property produces `null`; a `WHERE` predicate retains rows only when its expression is true. If you filter directly on an incomplete field, unknown cases can disappear from the result. [Neo4j’s null semantics](https://neo4j.com/docs/cypher-manual/current/values-and-types/working-with-null/) are worth understanding before you write a screening filter. Preserve the assessed population and return missingness explicitly.
+
+## Ask the narrative a different kind of question
+
+Now imagine a criterion whose answer depends on the circumstances around a treatment change. A code and a timestamp may not be enough. The useful explanation might be in a progress note, discharge summary, or specialist assessment.
+
+A narrative query should retrieve relevant passages and reason over them with a defined question. “Find evidence about why Therapy X was discontinued, including dates and conflicting statements” is more inspectable than “summarize everything important.”
+
+Return source identifiers and passages alongside the interpretation. Keep negation, uncertainty, and who the statement refers to. Prefer a small evidence bundle with a visible gap over a smooth paragraph that quietly fills it.
+
+The graph and narrative routes can reinforce each other. Structured relationships can narrow the search to a treatment episode; retrieved text can explain that episode. Conversely, a note can suggest a fact to verify against structured records. Neither route gets automatic precedence when the sources disagree. Surface the disagreement and apply a documented reconciliation policy.
+
+<EligibilityEvidence />
+
+## The smallest useful output is an assessment with receipts
+
+For each criterion, I would want an object along these lines:
+
+```json
+{
+  "criterion_id": "washout-x",
+  "protocol_version": "illustrative-v1",
+  "assessed_at": "2026-11-08",
+  "criterion_type": "inclusion",
+  "status": "unknown",
+  "reason": "Last administration date is not established",
+  "evidence_ids": [],
+  "missing_information": ["Reconciled Therapy X administration history"],
+  "requires_review": true
+}
+```
+
+Label semantics matter. For an inclusion criterion, “satisfied” usually supports eligibility. For an exclusion criterion, the presence of the excluding condition points in the other direction. Normalize the meaning before aggregation; a boolean called `match` is an invitation to invert the logic by accident.
+
+Nor is a trial always a flat list of conditions joined by AND. Alternatives, exceptions, cohort-specific rules, and nested conditions need explicit representation. Preserve the protocol’s logical grouping. A single percentage score should not overrule a mandatory unmet condition or hide unresolved evidence.
+
+Keep applicability distinct from missingness too. “This criterion does not apply to this cohort” and “we cannot tell whether it applies” are different statements.
+
+## Time is part of the fact
+
+A medical record is not a bag of timeless truths. An observation may have an event date, a documentation date, and an ingestion date. Those can disagree without any system being broken: a clinician may document yesterday’s event today, and an integration may deliver it tomorrow.
+
+Record those clocks separately. Evaluate against a defined assessment time and the protocol’s actual lookback window. A newer note that repeats old text is not necessarily newer clinical evidence. A corrected laboratory result may supersede an earlier value rather than add an independent observation.
+
+Versioning matters for the other side of the comparison as well. A trial amendment can change a threshold or exception. An old assessment should retain the criterion version it used; a new assessment should make the change visible.
+
+This is where a graph becomes especially useful as a trail through evidence. The question changes from “what label did the model produce?” to “which sources and rules support this assessment, and are they still current?”
+
+## Evaluate the people your funnel loses
+
+For a teaching demo, a few clean examples are enough. For a screening workflow, the interesting tests are the awkward ones: missing dates, negated diagnoses, outside treatment, contradictory notes, unit differences, duplicated text, and evidence exactly on a time boundary.
+
+Evaluate criterion-level judgments, evidence attribution, unresolved-case handling, and the recall of potentially eligible candidates after each filtering stage. Review false exclusions, not just the final shortlist. Measure retrieval separately from reasoning: a model cannot cite the decisive passage if the retrieval layer never found it.
+
+The [TrialGPT study](https://pmc.ncbi.nlm.nih.gov/articles/PMC11574183/) is a useful related reference because it separates candidate retrieval, criterion-level matching, and ranking. It explores patient-to-trial matching; a trial-to-patient screening funnel has a different search direction. Its results should not be borrowed as performance claims for a different system or population.
+
+Finally, make the output useful to the people reviewing it. They need a criterion, a conclusion with explicit uncertainty, the supporting source, and a clear next question. Final eligibility and enrollment belong with the clinical trial team, working from the complete protocol and current evidence.
+
+The satisfying outcome is not a graph with a million edges. It is a reviewer being able to say: **I can see why this patient is here, what we know, and what we still need to check.**

@@ -1,0 +1,2 @@
+# Optional: needed only to regenerate the CV PDF.
+reportlab==5.1.0

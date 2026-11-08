@@ -1,0 +1,31 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="site-header">
+  <a href="/" class="wordmark" aria-label="Rohit Udaiwal, home">
+    ru<span class="logo-dot">.</span>
+  </a>
+  <nav aria-label="Main navigation">
+    <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>
+      Home
+    </a>
+    <a
+      href="/blog/"
+      aria-current={Astro.url.pathname.startsWith('/blog') ? 'page' : undefined}
+    >
+      Blogs
+    </a>
+    <a
+      href="/cv/"
+      aria-current={
+        Astro.url.pathname === '/cv/' || Astro.url.pathname === '/cv'
+          ? 'page'
+          : undefined
+      }
+    >
+      CV
+    </a>
+    <ThemeToggle />
+  </nav>
+</header>

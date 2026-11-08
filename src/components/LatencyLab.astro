@@ -1,0 +1,79 @@
+<figure class="visual" id="latency-lab">
+  <div class="visual-title">
+    <span>01 / The anatomy of a pause</span>
+    <span>Interactive · illustrative values</span>
+  </div>
+  <div class="latency-controls">
+    <label for="endpoint">
+      End-of-turn wait: <output id="endpoint-value">400</output> ms
+      <input
+        id="endpoint"
+        type="range"
+        min="100"
+        max="1200"
+        step="50"
+        value="400"
+      />
+    </label>
+    <label for="reasoning">
+      Model first token: <output id="reasoning-value">250</output> ms
+      <input
+        id="reasoning"
+        type="range"
+        min="100"
+        max="1000"
+        step="50"
+        value="250"
+      />
+    </label>
+  </div>
+  <div class="latency-bar" aria-hidden="true">
+    <span data-stage="endpoint" style="flex:400;background:#83976d">
+      400
+    </span>
+    <span style="flex:100;background:#a4aa83">100</span>
+    <span data-stage="reasoning" style="flex:250;background:#526d4d">
+      250
+    </span>
+    <span style="flex:150;background:#718778">150</span>
+    <span style="flex:100;background:#a38e70">100</span>
+  </div>
+  <div class="legend">
+    <span style="--swatch:#83976d">Turn wait</span>
+    <span style="--swatch:#a4aa83">STT tail</span>
+    <span style="--swatch:#526d4d">Model</span>
+    <span style="--swatch:#718778">TTS</span>
+    <span style="--swatch:#a38e70">Transport</span>
+  </div>
+  <div class="latency-total" aria-live="polite">
+    <output id="latency-total">1,000</output>{' '}
+    <span style="font-size:18px">ms until first audio</span>
+  </div>
+  <figcaption>
+    A simplified serial budget measured from the end of user speech. Streaming
+    can overlap stages. Tool execution, playback buffers, and real network
+    conditions can add delay. These are teaching values, not benchmarks.
+  </figcaption>
+</figure>
+<script>
+  const endpoint = document.querySelector<HTMLInputElement>('#endpoint')!;
+  const reasoning = document.querySelector<HTMLInputElement>('#reasoning')!;
+  function update() {
+    for (const [id, input] of [
+      ['endpoint', endpoint],
+      ['reasoning', reasoning],
+    ] as const) {
+      document.querySelector(`#${id}-value`)!.textContent = input.value;
+      const bar = document.querySelector<HTMLElement>(`[data-stage="${id}"]`)!;
+      bar.style.flex = input.value;
+      bar.textContent = input.value;
+    }
+    document.querySelector('#latency-total')!.textContent = (
+      Number(endpoint.value) +
+      Number(reasoning.value) +
+      350
+    ).toLocaleString('en-US');
+  }
+  endpoint.addEventListener('input', update);
+  reasoning.addEventListener('input', update);
+</script>

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+tmp/
+output/
+.venv/
+package-lock.json

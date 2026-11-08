@@ -1,0 +1,87 @@
+<figure class="visual">
+  <div class="visual-title">
+    <span>01 / Two ways of asking. One evidence trail.</span>
+    <span>Illustrative architecture</span>
+  </div>
+  <div class="evidence-flow">
+    <div class="evidence-box">
+      <strong>Structured facts</strong>
+      <span>dates · values · relationships</span>
+    </div>
+    <span class="evidence-arrow" aria-hidden="true">
+      →
+    </span>
+    <div class="evidence-box">
+      <strong>Cypher query</strong>
+      <span>precise, bounded checks</span>
+    </div>
+    <div class="evidence-box">
+      <strong>Clinical narrative</strong>
+      <span>context · negation · uncertainty</span>
+    </div>
+    <span class="evidence-arrow" aria-hidden="true">
+      →
+    </span>
+    <div class="evidence-box">
+      <strong>Evidence retrieval</strong>
+      <span>source passages + interpretation</span>
+    </div>
+    <div class="evidence-merge">Criterion-level assessment → human review</div>
+  </div>
+  <figcaption>
+    Both routes should preserve source, time, and uncertainty. A graph
+    relationship makes an assertion queryable; it does not make the assertion
+    true.
+  </figcaption>
+</figure>
+<figure class="visual">
+  <div class="visual-title">
+    <span>02 / The same question, three evidence states</span>
+    <span>Open a case below</span>
+  </div>
+  <p style="margin-top:0;color:var(--ink)">
+    Fictional inclusion criterion: “At least 28 days since the last dose of
+    Therapy X.” Assessment date: November 8, 2026. These are teaching examples,
+    not clinical guidance.
+  </p>
+  <details class="evidence-details">
+    <summary>
+      <span class="evidence-state">SUPPORTED</span>Last dose documented on
+      September 30
+    </summary>
+    <p>
+      The source explicitly identifies September 30 as the last administration,
+      with reconciled treatment history through the assessment date. The
+      interval is 39 days, which satisfies this toy criterion. This says nothing
+      about the other trial criteria.
+    </p>
+  </details>
+  <details class="evidence-details">
+    <summary>
+      <span class="evidence-state">NOT SATISFIED</span>Confirmed administration
+      on November 1
+    </summary>
+    <p>
+      There is a verified dose seven days before assessment. That is enough to
+      show the 28-day interval has not elapsed for this toy criterion, even if
+      earlier treatment history is incomplete.
+    </p>
+  </details>
+  <details class="evidence-details">
+    <summary>
+      <span class="evidence-state unknown">UNKNOWN</span>No administration
+      appears in the available records
+    </summary>
+    <p>
+      An empty query result cannot establish a last-dose date. Treatment might
+      have occurred elsewhere, or the data might not have arrived. Keep the case
+      unresolved and identify the missing treatment history instead of silently
+      treating it as a pass.
+    </p>
+  </details>
+  <figcaption>
+    A criterion can be supported, not satisfied, or unresolved. Trial-level
+    eligibility requires the full protocol, applicable exceptions, current
+    evidence, and clinical review.
+  </figcaption>
+</figure>

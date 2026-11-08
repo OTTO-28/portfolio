@@ -1,56 +1,146 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Artwork from '../components/Artwork.astro';
 ---
 
-<Layout title="Rohit Udaiwal // AI Engineer">
-	<section class="hero">
-		<h1>Rohit Udaiwal</h1>
-		<p class="subtitle">AI Engineer specializing in deep learning, systems design, and machine learning.</p>
-		
-        <div class="bio">
-            <p>
-                I'm an engineer with a core drive to build scalable, data-driven solutions. My experience spans from architecting critical data pipelines for <strong>JPMorgan Chase</strong> to developing cutting-edge AI for the fintech space. I thrive on translating complex problems into elegant, high-performance code.
-            </p>
+<Layout title="Rohit Udaiwal — AI engineer & curious human">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">
+        <span class="status-dot"></span>AI engineer · Bengaluru, India
+      </div>
+      <h1>
+        Making sense.
+        <br />
+        <em>Building things.</em>
+      </h1>
+      <p class="intro">
+        I’m Rohit. I build AI systems that connect messy information to useful
+        decisions. Currently at <strong>Risa Labs</strong>, working across
+        knowledge graphs, clinical reasoning, and voice.
+      </p>
+      <div class="hero-links">
+        <a class="text-link" href="#work">
+          Explore my work ↓
+        </a>
+        <a href="mailto:udaiwalrohit@gmail.com">Say hello ↗</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <Artwork />
+      <div class="art-caption">
+        <span>FIG. 01 / CONNECTING THE DOTS</span>
+        <span>↗</span>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="work">
+    <div class="section-heading">
+      <h2>
+        <span class="section-number">01</span>What I’m building
+      </h2>
+      <span class="small-label">At Risa Labs · 2026—</span>
+    </div>
+    <div class="work-feature">
+      <div>
+        <span class="small-label">Knowledge graphs × healthcare</span>
+        <h3>
+          From patient records
+          <br />
+          to clinical eligibility.
+        </h3>
+        <p>
+          A criterion-by-criterion screening funnel for clinical trials.
+          Structured Cypher queries and narrative queries over patient medical
+          records help answer eligibility questions.
+        </p>
+        <div class="tags">
+          <span>Knowledge graphs</span>
+          <span>Cypher</span>
+          <span>Clinical reasoning</span>
         </div>
-
-        <div class="cta">
-             <a href="mailto:udaiwalrohit@gmail.com" class="button">Get in Touch</a>
-        </div>
-	</section>
+      </div>
+      <div
+        class="funnel"
+        role="img"
+        aria-label="Conceptual screening funnel: patient records, structured criteria, narrative evidence, and eligibility review. This is a simplified illustration."
+      >
+        <div class="funnel-step">Patient records</div>
+        <span>↓</span>
+        <div class="funnel-step">Structured criteria</div>
+        <span>↓</span>
+        <div class="funnel-step">Narrative evidence</div>
+        <span>↓</span>
+        <div class="funnel-step">Eligibility review</div>
+        <small>Conceptual workflow · one criterion at a time</small>
+      </div>
+    </div>
+    <div class="work-list">
+      <div class="work-item">
+        <span class="small-label">Voice systems</span>
+        <h3>Agents that can handle a real call.</h3>
+        <p>
+          Prior-authorization status retrieval with tool calls, IVR navigation,
+          live listening, and human takeover.
+        </p>
+      </div>
+      <div class="work-item">
+        <span class="small-label">Healthcare automation</span>
+        <h3>Less paperwork. More useful answers.</h3>
+        <p>
+          Medical-necessity reasoning over clinical charts, alongside
+          payer-portal workflows that reduce manual form submissions.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="writing">
+    <div class="section-heading">
+      <h2>
+        <span class="section-number">02</span>Writing & background
+      </h2>
+    </div>
+    <div class="explore-grid">
+      <a class="explore-link" href="/blog/">
+        <span class="small-label">The blog</span>
+        <h3>
+          Follow a rabbit hole. <span aria-hidden="true">↗</span>
+        </h3>
+        <p>
+          Field notes on voice AI, knowledge graphs, and the patterns hiding in
+          music.
+        </p>
+      </a>
+      <a class="explore-link" href="/cv/">
+        <span class="small-label">Experience & CV</span>
+        <h3>
+          A little more context. <span aria-hidden="true">↗</span>
+        </h3>
+        <p>
+          My path through healthcare AI, fintech, and data systems. Plus a
+          downloadable CV.
+        </p>
+      </a>
+    </div>
+  </section>
+  <blockquote class="landing-quote">
+    <p>
+      Excellence is never an accident. It is always the result of high
+      intention, sincere effort, and intelligent execution. Choice, not chance,
+      determines your destiny.
+    </p>
+  </blockquote>
+  <section class="contact">
+    <div>
+      <h2>Good things start with a hello.</h2>
+      <p>AI, interesting systems, or a good musical rabbit hole.</p>
+    </div>
+    <div class="contact-links">
+      <a class="text-link" href="mailto:udaiwalrohit@gmail.com">
+        Email ↗
+      </a>
+      <a href="https://github.com/OTTO-28">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/rohit-udaiwal/">LinkedIn ↗</a>
+    </div>
+  </section>
 </Layout>
-
-<style>
-    .hero {
-        padding-top: 2rem;
-    }
-    .subtitle {
-        color: var(--color-text-muted);
-        font-size: 1.25rem;
-        margin-bottom: 2.5rem;
-        font-weight: 300;
-    }
-    .bio {
-        margin-bottom: 2.5rem;
-        max-width: 36rem;
-        font-size: 1rem;
-        line-height: 1.7;
-        color: #a3a3a3;
-    }
-    strong {
-        color: var(--color-text);
-        font-weight: 500;
-    }
-    .button {
-        display: inline-block;
-        border: 1px solid #333;
-        padding: 0.75rem 1.5rem;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        transition: all 0.2s;
-        background: rgba(255,255,255,0.03);
-    }
-    .button:hover {
-        border-color: var(--color-text);
-        background: rgba(255,255,255,0.1);
-    }
-</style>

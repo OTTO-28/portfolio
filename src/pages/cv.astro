@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import cv from '../data/cv.json';
+---
+
+<Layout
+  title="CV — Rohit Udaiwal"
+  description="AI engineer at Risa Labs, previously Finfactor and JPMorgan Chase. Experience, research, and a downloadable CV."
+>
+  <div class="resume-header">
+    <div class="eyebrow">A little more context</div>
+    <h1 style="margin-top:20px">Engineer. Curious by default.</h1>
+    <p>
+      I’m Rohit Udaiwal, an AI engineer working on healthcare systems at Risa
+      Labs. My path runs from electronics at IIT Guwahati through large-scale
+      data systems and fintech to clinical reasoning and voice agents.
+    </p>
+    <a
+      class="button-link"
+      href="/assets/resume.pdf"
+      download="Rohit_Udaiwal_CV_2026.pdf"
+    >
+      Download my CV ↓
+    </a>
+  </div>
+  <section class="section">
+    <div class="section-heading">
+      <h2>Experience</h2>
+      <span class="small-label">2023 — present</span>
+    </div>
+    {cv.experience.map((job) => (
+      <div class="resume-job">
+        <div>
+          <time>{job.dates}</time>
+          <p class="small-label" style="margin-top:8px;font-size:9px">
+            {job.location}
+          </p>
+        </div>
+        <div>
+          <h3>{job.company}</h3>
+          <p class="role">{job.role}</p>
+          <ul>
+            {job.bullets.map((b) => (
+              <li>
+                <strong>{b.label}.</strong> {b.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </section>
+  <section class="section">
+    <div class="section-heading">
+      <h2>Tools of the trade</h2>
+    </div>
+    <div class="work-list">
+      {cv.skills.map((skill) => (
+        <div class="work-item">
+          <span class="small-label">{skill.label}</span>
+          <p style="margin-top:12px">{skill.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section class="section">
+    <div class="section-heading">
+      <h2>Research & education</h2>
+    </div>
+    <div class="resume-job">
+      <div>
+        <time>{cv.publication.venue}</time>
+      </div>
+      <div>
+        <h3>
+          <a class="text-link" href={cv.publication.url}>
+            {cv.publication.title} ↗
+          </a>
+        </h3>
+        <p style="font-size:14px;color:var(--muted);margin-top:16px">
+          {cv.publication.text}
+        </p>
+      </div>
+    </div>
+    <div class="resume-job">
+      <time>{cv.education.date}</time>
+      <div>
+        <h3>{cv.education.institution}</h3>
+        <p style="font-size:14px;color:var(--muted)">
+          {cv.education.degree}
+          <br />
+          {cv.education.grade}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div>
+      <h2>Let’s compare notes.</h2>
+      <p>Always happy to talk about interesting engineering problems.</p>
+    </div>
+    <a class="text-link" href={`mailto:${cv.email}`}>
+      {cv.email} ↗
+    </a>
+  </section>
+</Layout>
